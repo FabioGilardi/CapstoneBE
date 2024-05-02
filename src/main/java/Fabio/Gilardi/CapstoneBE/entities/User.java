@@ -2,10 +2,7 @@ package Fabio.Gilardi.CapstoneBE.entities;
 
 import Fabio.Gilardi.CapstoneBE.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +20,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@JsonIgnoreProperties({"password", "role", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired", "enabled"})
+@JsonIgnoreProperties({"password", "role", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired", "enabled", "getAge"})
 public class User implements UserDetails {
 
     //    ATTRIBUTES
@@ -31,8 +28,12 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private long id;
+
     private String avatar, username, email, password, name, surname;
+
     private LocalDate birthDate;
+
+    @Enumerated(EnumType.STRING)
     private UserRole role;
 
     //    CONSTRUCTORS
