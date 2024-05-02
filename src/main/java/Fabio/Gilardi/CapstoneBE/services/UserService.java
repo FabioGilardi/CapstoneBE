@@ -73,6 +73,8 @@ public class UserService {
         User found = this.findById(id);
         if (encoder.matches(payload.newPassword(), found.getPassword()) || payload.oldPassword().equals(payload.newPassword()))
             throw new BadRequestException("You must change the password");
+        if (!encoder.matches(payload.oldPassword(), found.getPassword()))
+            throw new BadRequestException("The actual password is wrong");
         found.setPassword(encoder.encode(payload.newPassword()));
         this.userDAO.save(found);
         return "Password has been changed correctly";
