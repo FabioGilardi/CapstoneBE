@@ -37,6 +37,7 @@ public class UserService {
         if (found.getEmail().equals(payload.email()) && found.getUsername().equals(payload.username())) {
             found.setName(payload.name());
             found.setSurname(payload.surname());
+            found.setDefaultAvatar();
         }
         if (found.getEmail().equals(payload.email()) && !found.getUsername().equals(payload.username())) {
             if (this.userDAO.existsByUsername(payload.username()))
@@ -44,12 +45,14 @@ public class UserService {
             found.setName(payload.name());
             found.setSurname(payload.surname());
             found.setUsername(payload.username());
+            found.setDefaultAvatar();
         }
         if (found.getUsername().equals(payload.username()) && !found.getEmail().equals(payload.email())) {
             if (this.userDAO.existsByEmail(payload.email())) throw new BadRequestException("Email is already taken");
             found.setName(payload.name());
             found.setSurname(payload.surname());
             found.setEmail(payload.email());
+            found.setDefaultAvatar();
         }
         if (!found.getUsername().equals(payload.username()) && !found.getEmail().equals(payload.email())) {
             if (this.userDAO.existsByUsernameAndEmail(payload.username(), payload.email()))
@@ -61,6 +64,7 @@ public class UserService {
             found.setSurname(payload.surname());
             found.setEmail(payload.email());
             found.setUsername(payload.username());
+            found.setDefaultAvatar();
         }
         return this.userDAO.save(found);
     }
