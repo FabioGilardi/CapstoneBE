@@ -1,7 +1,6 @@
 package Fabio.Gilardi.CapstoneBE.services;
 
 import Fabio.Gilardi.CapstoneBE.entities.Review;
-import Fabio.Gilardi.CapstoneBE.entities.User;
 import Fabio.Gilardi.CapstoneBE.exceptions.BadRequestException;
 import Fabio.Gilardi.CapstoneBE.payloads.NewReviewDTO;
 import Fabio.Gilardi.CapstoneBE.repositories.ReviewDAO;
@@ -33,8 +32,8 @@ public class ReviewService {
         return this.reviewDAO.findAll(pageable);
     }
 
-    public List<Review> findAllByUser(User user) {
-        return this.reviewDAO.findByUser(user);
+    public List<Review> findAllByUserId(long userId) {
+        return this.reviewDAO.findByUserId(userId);
     }
 
     public Review findById(long id) {
