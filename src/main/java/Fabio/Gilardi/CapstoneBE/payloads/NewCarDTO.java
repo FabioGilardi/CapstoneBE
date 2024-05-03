@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
+import java.time.LocalDate;
+
 public record NewCarDTO(
         @NotEmpty(message = "picture is mandatory")
         String picture,
@@ -31,6 +33,9 @@ public record NewCarDTO(
         @NotNull(message = "fuel consumption is mandatory")
         @Min(value = 1, message = "fuel consumption must be more than 0")
         int fuelConsumption,
+
+        @NotNull(message = "registration date is mandatory")
+        LocalDate registrationDate,
 
         @NotNull(message = "brand is mandatory")
         Brand brand,
