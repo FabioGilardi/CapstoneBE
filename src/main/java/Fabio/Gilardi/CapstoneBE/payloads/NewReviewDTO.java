@@ -13,10 +13,6 @@ public record NewReviewDTO(
         @NotNull(message = "rating is mandatory")
         @Min(value = 0, message = "rating can't be less than 0")
         @Max(value = 5, message = "rating can't be more than 5")
-        int rating,
-
-        @NotNull(message = "user id is mandatory")
-        @Min(value = 0, message = "user id must be more than 0")
-        long userId
+        int rating
 ) {
 }
