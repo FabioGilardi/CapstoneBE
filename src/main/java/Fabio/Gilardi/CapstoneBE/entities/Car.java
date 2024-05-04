@@ -8,12 +8,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 public class Car {
+
 
     //    ATTRIBUTES
     @Id
@@ -38,8 +40,15 @@ public class Car {
     @Enumerated(EnumType.STRING)
     private Color color;
 
+    @ManyToMany
+    @JoinTable(
+            name = "car_accessory",
+            joinColumns = @JoinColumn(name = "car_id"),
+            inverseJoinColumns = @JoinColumn(name = "accessory_id"))
+    private List<Accessory> accessoryList;
+
     //    CONSTRUCTORS
-    public Car(String picture, String model, int price, int kilometers, int power, int displacements, int fuelConsumption, LocalDate registrationDate, Brand brand, Status status, Fuel fuel, EmissionClass emissionClass, TransmissionType transmissionType, DoorNumber doorNumber, Color color) {
+    public Car(String picture, String model, int price, int kilometers, int power, int displacements, int fuelConsumption, LocalDate registrationDate, Brand brand, Status status, Fuel fuel, EmissionClass emissionClass, TransmissionType transmissionType, DoorNumber doorNumber, Color color, List<Accessory> accessoryList) {
         this.picture = picture;
         this.model = model;
         this.price = price;
@@ -55,5 +64,6 @@ public class Car {
         this.transmissionType = transmissionType;
         this.doorNumber = doorNumber;
         this.color = color;
+        this.accessoryList = accessoryList;
     }
 }

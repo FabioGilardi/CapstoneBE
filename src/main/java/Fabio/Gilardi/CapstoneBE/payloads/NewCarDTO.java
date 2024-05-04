@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public record NewCarDTO(
         @NotEmpty(message = "picture is mandatory")
@@ -56,6 +57,9 @@ public record NewCarDTO(
         DoorNumber doorNumber,
 
         @NotNull(message = "color is mandatory")
-        Color color
+        Color color,
+
+        @NotNull(message = "accessories are mandatory")
+        List<Long> accessoryIdList
 ) {
 }

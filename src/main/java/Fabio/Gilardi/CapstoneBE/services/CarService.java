@@ -1,5 +1,6 @@
 package Fabio.Gilardi.CapstoneBE.services;
 
+import Fabio.Gilardi.CapstoneBE.entities.Accessory;
 import Fabio.Gilardi.CapstoneBE.entities.Car;
 import Fabio.Gilardi.CapstoneBE.exceptions.BadRequestException;
 import Fabio.Gilardi.CapstoneBE.payloads.NewCarDTO;
@@ -12,14 +13,22 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class CarService {
 
     @Autowired
     CarDAO carDAO;
 
+    @Autowired
+    AccessoryService accessoryService;
+
     public Car save(NewCarDTO payload) {
-        Car newCar = new Car(payload.picture(), payload.model(), payload.price(), payload.kilometers(), payload.power(), payload.displacements(), payload.fuelConsumption(), payload.registrationDate(), payload.brand(), payload.status(), payload.fuel(), payload.emissionClass(), payload.transmissionType(), payload.doorNumber(), payload.color());
+        List<Accessory> accessoryList = new ArrayList<>();
+        payload.accessoryIdList().forEach(accessoryId -> accessoryList.add(this.accessoryService.findById(accessoryId)));
+        Car newCar = new Car(payload.picture(), payload.model(), payload.price(), payload.kilometers(), payload.power(), payload.displacements(), payload.fuelConsumption(), payload.registrationDate(), payload.brand(), payload.status(), payload.fuel(), payload.emissionClass(), payload.transmissionType(), payload.doorNumber(), payload.color(), accessoryList);
         return this.carDAO.save(newCar);
     }
 
