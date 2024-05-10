@@ -8,7 +8,7 @@ public record UpdatePasswordDTO(
         String oldPassword,
 
         @NotEmpty(message = "new password is mandatory")
-        @Size(min = 8, message = "username must be longer than 7 characters")
+        @Size(min = 8, message = "password must be longer than 7 characters")
         String newPassword
 ) {
 }

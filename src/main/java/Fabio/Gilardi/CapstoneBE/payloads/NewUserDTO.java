@@ -17,7 +17,7 @@ public record NewUserDTO(
         String email,
 
         @NotEmpty(message = "password is mandatory")
-        @Size(min = 8, message = "username must be longer than 7 characters")
+        @Size(min = 8, message = "password must be longer than 7 characters")
         String password,
 
         @NotEmpty(message = "name is mandatory")
