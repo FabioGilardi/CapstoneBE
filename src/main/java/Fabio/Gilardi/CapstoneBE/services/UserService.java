@@ -1,6 +1,7 @@
 package Fabio.Gilardi.CapstoneBE.services;
 
 import Fabio.Gilardi.CapstoneBE.entities.User;
+import Fabio.Gilardi.CapstoneBE.enums.UserRole;
 import Fabio.Gilardi.CapstoneBE.exceptions.BadRequestException;
 import Fabio.Gilardi.CapstoneBE.exceptions.NotFoundException;
 import Fabio.Gilardi.CapstoneBE.payloads.UpdatePasswordDTO;
@@ -13,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserService {
@@ -30,6 +33,10 @@ public class UserService {
 
     public User findById(long id) {
         return this.userDAO.findById(id).orElseThrow(() -> new NotFoundException("User with id " + id + " has not been found"));
+    }
+
+    public List<User> findSellers() {
+        return this.userDAO.findByRole(UserRole.SELLER);
     }
 
     public User findByIdAndUpdate(long id, UpdateUserDTO payload) {
