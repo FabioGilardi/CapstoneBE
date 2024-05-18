@@ -8,7 +8,6 @@ import Fabio.Gilardi.CapstoneBE.services.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -24,7 +23,6 @@ public class ReviewController {
     ReviewService reviewService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
     public Page<Review> findAll(@RequestParam(defaultValue = "0") int number,
                                 @RequestParam(defaultValue = "30") int size,
                                 @RequestParam(defaultValue = "id") String sortBy) {
