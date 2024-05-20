@@ -15,8 +15,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -49,11 +47,6 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void findMeAndDelete(@AuthenticationPrincipal User currentUser) {
         this.userService.findByIdAndDelete(currentUser.getId());
-    }
-
-    @GetMapping("/sellers")
-    public List<User> findSellers() {
-        return this.userService.findSellers();
     }
 
     @GetMapping

@@ -6,7 +6,6 @@ import Fabio.Gilardi.CapstoneBE.exceptions.BadRequestException;
 import Fabio.Gilardi.CapstoneBE.payloads.NewReviewDTO;
 import Fabio.Gilardi.CapstoneBE.services.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
@@ -22,12 +21,6 @@ public class ReviewController {
     @Autowired
     ReviewService reviewService;
 
-    @GetMapping
-    public Page<Review> findAll(@RequestParam(defaultValue = "0") int number,
-                                @RequestParam(defaultValue = "30") int size,
-                                @RequestParam(defaultValue = "id") String sortBy) {
-        return this.reviewService.findAll(number, size, sortBy);
-    }
 
     @GetMapping("/me")
     public List<Review> findAllByUserId(@AuthenticationPrincipal User currentUser) {

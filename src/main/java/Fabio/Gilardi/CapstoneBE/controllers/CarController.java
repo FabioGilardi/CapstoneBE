@@ -6,7 +6,6 @@ import Fabio.Gilardi.CapstoneBE.payloads.NewCarDTO;
 import Fabio.Gilardi.CapstoneBE.payloads.UpdateCarDTO;
 import Fabio.Gilardi.CapstoneBE.services.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
@@ -20,13 +19,6 @@ public class CarController {
     @Autowired
     CarService carService;
 
-    @GetMapping
-    public Page<Car> findAll(@RequestParam(defaultValue = "0") int number,
-                             @RequestParam(defaultValue = "50") int size,
-                             @RequestParam(defaultValue = "id") String sortBy) {
-        return this.carService.findAll(number, size, sortBy);
-    }
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('SELLER')")
@@ -34,11 +26,6 @@ public class CarController {
                     BindingResult validation) {
         if (validation.hasErrors()) throw new BadRequestException(validation.getAllErrors());
         return this.carService.save(payload);
-    }
-
-    @GetMapping("/{id}")
-    public Car findById(@PathVariable long id) {
-        return this.carService.findById(id);
     }
 
     @PutMapping("/{id}")
