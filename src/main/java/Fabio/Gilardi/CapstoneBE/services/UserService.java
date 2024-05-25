@@ -7,6 +7,8 @@ import Fabio.Gilardi.CapstoneBE.exceptions.NotFoundException;
 import Fabio.Gilardi.CapstoneBE.payloads.UpdatePasswordDTO;
 import Fabio.Gilardi.CapstoneBE.payloads.UpdateUserDTO;
 import Fabio.Gilardi.CapstoneBE.repositories.UserDAO;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -25,6 +29,9 @@ public class UserService {
 
     @Autowired
     PasswordEncoder encoder;
+
+    @Autowired
+    Cloudinary cloudinaryUploader;
 
     public Page<User> findAll(int number, int size, String sortBy) {
         Pageable pageable = PageRequest.of(number, size, Sort.by(sortBy));
@@ -44,7 +51,7 @@ public class UserService {
         if (found.getEmail().equals(payload.email()) && found.getUsername().equals(payload.username())) {
             found.setName(payload.name());
             found.setSurname(payload.surname());
-            found.setDefaultAvatar();
+            if (!found.getAvatar().contains("cloudinary")) found.setDefaultAvatar();
         }
         if (found.getEmail().equals(payload.email()) && !found.getUsername().equals(payload.username())) {
             if (this.userDAO.existsByUsername(payload.username()))
@@ -52,14 +59,14 @@ public class UserService {
             found.setName(payload.name());
             found.setSurname(payload.surname());
             found.setUsername(payload.username());
-            found.setDefaultAvatar();
+            if (!found.getAvatar().contains("cloudinary")) found.setDefaultAvatar();
         }
         if (found.getUsername().equals(payload.username()) && !found.getEmail().equals(payload.email())) {
             if (this.userDAO.existsByEmail(payload.email())) throw new BadRequestException("Email is already taken");
             found.setName(payload.name());
             found.setSurname(payload.surname());
             found.setEmail(payload.email());
-            found.setDefaultAvatar();
+            if (!found.getAvatar().contains("cloudinary")) found.setDefaultAvatar();
         }
         if (!found.getUsername().equals(payload.username()) && !found.getEmail().equals(payload.email())) {
             if (this.userDAO.existsByUsernameAndEmail(payload.username(), payload.email()))
@@ -71,7 +78,7 @@ public class UserService {
             found.setSurname(payload.surname());
             found.setEmail(payload.email());
             found.setUsername(payload.username());
-            found.setDefaultAvatar();
+            if (!found.getAvatar().contains("cloudinary")) found.setDefaultAvatar();
         }
         return this.userDAO.save(found);
     }
@@ -94,5 +101,13 @@ public class UserService {
 
     public User findByEmail(String email) {
         return this.userDAO.findByEmail(email).orElseThrow(() -> new NotFoundException("User with email " + email + " has not been found"));
+    }
+
+    public String uploadImage(MultipartFile img, long userId) throws IOException {
+        User found = findById(userId);
+        String url = (String) cloudinaryUploader.uploader().upload(img.getBytes(), ObjectUtils.emptyMap()).get("url");
+        found.setAvatar(url);
+        userDAO.save(found);
+        return url;
     }
 }

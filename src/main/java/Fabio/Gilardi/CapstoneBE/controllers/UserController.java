@@ -14,6 +14,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/users")
@@ -77,5 +80,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void findByIdAndDelete(@PathVariable long id) {
         this.userService.findByIdAndDelete(id);
+    }
+
+    @PostMapping("/me/image")
+    public String uploadAvatar(@RequestParam("avatar") MultipartFile image,
+                               @AuthenticationPrincipal User currentUser) throws IOException {
+        return userService.uploadImage(image, currentUser.getId());
     }
 }
