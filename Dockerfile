@@ -16,7 +16,7 @@ COPY --from=build /usr/src/app/target/*.jar app.jar
 
 # Espone la porta 8080 per l'applicazione
 # Quest porta deve coincidere con quella impostata su Koyeb
-EXPOSE 3001
+EXPOSE 8000
 
 # Comando per eseguire l'applicazione
 ENTRYPOINT ["java","-jar","/app.jar"]
